@@ -70,4 +70,9 @@ export default hopeTheme({
     wideBreakPoint: 1440,
     pure: false,
     print: false,
+
+    plugins: {
+        prismjs: {
+        }
+    }
 })
