@@ -2,8 +2,8 @@
 home: true
 icon: home
 title: 主页
-heroImage: /images/logo.png
 heroText: On your hand
+heroImage: /images/logo.png
 tagline: 工作时的第一手参考资料，记录工作中的各种经验...
 features: 
   - title: Spring
@@ -14,13 +14,15 @@ features:
     icon: gitee
     link: https://gitee.com/
 
-  - title: IDEA
-    icon: navigate
+  - title: Intellij IDEA
+    icon: intellij
     link: https://www.jetbrains.com/help/idea/  
 
   - title: Apache Commons
     icon: Apache
     link: https://commons.apache.org/
----
 
-# On your hand
+  - title: Maven Repo
+    icon: maven
+    link: https://mvnrepository.com/
+---
