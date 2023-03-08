@@ -8,8 +8,8 @@ export default defineUserConfig({
     title: "On your hand",
     description: "工作时的第一手参考资料，记录工作中的各种经验",
     head: [
-        ['link', { rel: 'icon', href: '/images/logo.png' }],
-        ['link', { rel: 'stylesheet', type: 'text/css', href: '/assets/font/iconfont.css'}]
+        ['link', { rel: 'icon', href: '/on-your-hand/images/logo.png' }],
+        ['link', { rel: 'stylesheet', type: 'text/css', href: '/on-your-hand/assets/font/iconfont.css'}]
     ],
 
     theme,
