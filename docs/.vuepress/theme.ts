@@ -4,7 +4,7 @@ import sidebar from "./sidebar.js";
 
 export default hopeTheme({
 
-    hostname: "https://localhost:8080",
+    hostname: "https://ayachinene0100.gitee.io/on-your-hand",
 
     navbar,
     navbarLayout: {
