@@ -3,6 +3,7 @@ import theme from "./theme";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
 
 export default defineUserConfig({
+    base: "/on-your-hand/",
     lang: "zh-CN",
     title: "On your hand",
     description: "工作时的第一手参考资料，记录工作中的各种经验",
