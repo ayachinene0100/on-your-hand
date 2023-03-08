@@ -46,7 +46,7 @@ public static Integer valueOf(int i) {
 @tab StringUtils.substring()
 
 ```java
-package org.apache.commons.lang3;
+// org.apache.commons.lang.StringUtils;
 
 /**
 * StringUtils.substring(null, *, *)    = null
@@ -182,4 +182,109 @@ long a = 1000_0000_0000L;
 你应该总是使用‘L’来表示long字面值，而非'l'。
 :::
 
-## 使用
+## 使用封装好的读写方法优于原生读写
+
+### 小文件读写
+
+`java.nio.file.Files`提供了一些简单易用的读取方法。
+
+```java
+Stream<String> lines(Path path) throws IOException
+Stream<String> lines(Path path, Charset cs) throws IOException
+
+List<String> readAllLines(Path path) throws IOException
+List<String> readAllLines(Path path, Charset cs) throws IOException
+
+String readString(Path path) throws IOException
+String readString(Path path, Charset cs) throws IOException
+
+byte[] readAllBytes(Path path) throws IOException
+```
+
+---
+
+`java.nio.file.Files`也提供了一些简单易用的写入方法。
+
+```java
+Path write(Path path, byte[] bytes, OpenOption... options)
+    throws IOException
+
+Path write(Path path,
+           Iterable<? extends CharSequence> lines,
+           OpenOption... options)
+    throws IOException
+
+Path write(Path path, Iterable<? extends CharSequence> lines,
+           Charset cs, OpenOption... options)
+    throws IOException    
+
+Path writeString(Path path, CharSequence csq, OpenOption... options)
+    throws IOException
+
+Path writeString(Path path, CharSequence csq, Charset cs, OpenOption... options)
+    throws IOException
+```
+
+这些方法在读/写小文件时非常好用。使用者无需考虑关闭流等繁琐的细节。
+但并不适合读/写大文件。因为这些方法都尝试一次性将文件内容读/写到内存中。  
+特别地，由于`byte[]`的长度限制，诸如`readAllBytes()`，`write(..byte[]..)`一类的方法最多只能读/写2147483647B，即2GB。
+
+::: info 
+以上文本读/写方法在不声明`Charset`时，默认为`sun.nio.cs.UTF_8.INSTANCE`
+:::
+
+类似的工具类还有apache的`FileUtils`，`IOUtils`。
+
+### 大文件读取
+
+#### 二进制
+
+Java 11提供了`byte[] InputStream.readNBytes(int len)`  
+若使用Java 8可以考虑copy`readNBytes()`的实现。
+
+#### 文本
+
+考虑使用`org.apache.commons.io.IOUtils.lineIterator()`
+
+## 考虑复用对象 <Badge text="Common" type="tip" />
+
+考虑以下代码
+
+```java
+public isAmt(String s) {
+    return s.matches("^(0|[1-9][0-9]*)\\.[0-9]{2}$");
+}
+```
+
+该方法用来判断一个字符串是否是保留到两位小数的正数（或是"0.00"）。
+乍一看似乎没什么问题，让我们看看内部发生了什么事情。
+
+```java
+// java.lang.String.matches()
+public boolean matches(String regex) {
+    return Pattern.matches(regex, this);
+}
+
+// java.util.regex.Pattern.matches()
+public static boolean matches(String regex, CharSequence input) {
+    Pattern p = Pattern.compile(regex);
+    Matcher m = p.matcher(input);
+    return m.matches();
+}
+```
+
+可以看到内部会创建一个`Pattern`对象和`Matcher`对象。
+如果`isAmt()`被调用**一百万次**，就会创建**一百万个**`Pattern`对象！
+而这些`Pattern`对象之间根本没什么不同！
+
+改进：
+
+```java
+// Pattern是线程安全的，所以你可以很放心地这么做
+private static final Pattern AMT = 
+    Pattern.compile("^(0|[1-9][0-9]*)\\\\.[0-9]{2}$");
+
+public isAmt(String s) {
+    return AMT.matcher(s).matches();
+}
+```

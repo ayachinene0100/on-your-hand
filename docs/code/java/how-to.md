@@ -65,6 +65,13 @@ private static String getAmtStr(int amtInCent) {
 当金额数较大时考虑使用`long`
 :::
 
+::: warning
+示例代码出于简洁，使用了`String.matches()`方法。
+该方法内部会创建一个`Pattern`和一个`Matcher`对象。
+为了避免重复创建对象造成的开销，在实际开发中，如果一个正则表达式会被多次使用，
+你应该考虑复用该表达式对应的`Pattern`。  
+详细可以参考[考虑复用对象](./best-practice.md#考虑复用对象)
+:::
 ### 比较
 
 `BigDecimal`使用起来较为简单直接，但是效率不如整数运算。  
@@ -83,6 +90,8 @@ private static String getAmtStr(int amtInCent) {
 #### 利用校验和
 
 ```java
+import org.apache.commons.io.FileUtils;
+
 File a = FileUtils.getFile("pathA");
 File b = FileUtils.getFile("pathB");
 long checkA = FileUtils.checksumCRC32(a);
