@@ -15,7 +15,7 @@
 
 ### 解决方案
 
-#### 使用`BigDecimal`
+#### 1. 使用`BigDecimal`
 
 ```java
 BigDecimal amt = new BigDecimal("41.51");
@@ -24,17 +24,20 @@ BigDecimal total = amt.add(tax);
 System.out.println(total);  // 44.00
 ```
 
-#### 转为整数运算
+#### 2. 转为整数运算
 
-```java {8}
+```java
 import org.apache.commons.lang3.StringUtils;
 
 int amtInCent = convertToCent("41.51");
 int taxInCent = convertToCent("2.49");
-int totalInCent = amtInCent + taxInCent;    // 4400
+int totalInCent = amtInCent + taxInCent;
+System.out.println(getAmtStr(totalInCent)); // 44.00
 
 private static int convertToCent(String amt) {
-    // 省略对amt的格式检查
+    Assert.isTrue(
+        amt != null && 
+        amt.matches("^(0|[1-9][0-9]*)\\.[0-9]{2}$"), "金额格式错误");
     String[] s = StringUtils.split(amt, '.');
     return Integer.parseInt(s[0] + s[1]);
 }
@@ -56,3 +59,37 @@ private static String getAmtStr(int amtInCent) {
     return left + "." + right;
 }
 ```
+
+::: tip
+`int`的最大值为：2147483647，最大可表示金额为：2147,4836.47元  
+当金额数较大时考虑使用`long`
+:::
+
+### 比较
+
+`BigDecimal`使用起来较为简单直接，但是效率不如整数运算。  
+整数运算仅在输入和输出时进行一次类型转换（`string`<->`int`），其余均为整型运算，效率较高。  
+如果注重性能且涉及到多次运算，推荐使用整数运算。
+
+## 如何比较两个文件内容是否一致？
+
+### 场景
+
+- 校验文件完整性
+- 重复文件查找
+
+### 解决方案
+
+#### 利用校验和
+
+```java
+File a = FileUtils.getFile("pathA");
+File b = FileUtils.getFile("pathB");
+long checkA = FileUtils.checksumCRC32(a);
+long checkB = FileUtils.checksumCRC32(b);
+System.out.println(checkA == checkB);
+```
+
+::: tip
+`FileUtils`也提供了`checksum(final File file, final Checksum checksum)`方法，可以自行选择校验算法
+:::

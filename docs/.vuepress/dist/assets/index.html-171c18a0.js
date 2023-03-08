@@ -1,0 +1,1 @@
+import{_ as n,W as a,X as o,Y as e,Z as t}from"./framework-e47c760d.js";const r={},c=e("h1",{id:"on-your-hand",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#on-your-hand","aria-hidden":"true"},"#"),t(" On your hand")],-1),d=[c];function s(_,h){return a(),o("div",null,d)}const l=n(r,[["render",s],["__file","index.html.vue"]]);export{l as default};

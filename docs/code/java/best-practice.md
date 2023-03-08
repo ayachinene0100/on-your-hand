@@ -128,6 +128,18 @@ public String substring(int beginIndex, int endIndex) {
 
 ::: code-tabs#java
 
+@tab try-with-resource
+
+```java
+// 使用try-with-resource，代码简洁明了
+File file = new File("some path");
+try (InputStream in = FileUtils.openInputStream(file)) {
+    // 对in做一些操作
+} catch (IOException e) {
+    throw new RuntimeException(e);
+}
+```
+
 @tab finally close
 
 ```java
@@ -150,19 +162,24 @@ try {
 }
 ```
 
-@tab try-with-resource
-
-```java
-// 使用try-with-resource，代码简洁明了
-File file = new File("some path");
-try (InputStream in = FileUtils.openInputStream(file)) {
-    // 对in做一些操作
-} catch (IOException e) {
-    throw new RuntimeException(e);
-}
-```
-
 :::
 
-实现了`AutoCloseable`接口的对象都可以声明在`try()`中
+实现了`AutoCloseable`接口的对象都可以声明在`try()`中，
 try catch代码块执行完毕后声明在`try()`中的变量会自动关闭。
+
+使用try-with-resource也可以很好地避免忘记关闭流之类的情况。
+
+## 使用'_'来使长数字更加可读
+
+```java
+// 1000亿，但可读性很差
+long a = 100000000000L;
+// 1000亿，但可读性很好
+long a = 1000_0000_0000L;
+```
+
+::: tip
+你应该总是使用‘L’来表示long字面值，而非'l'。
+:::
+
+## 使用
