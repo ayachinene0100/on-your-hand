@@ -102,3 +102,179 @@ System.out.println(checkA == checkB);
 ::: tip
 `FileUtils`也提供了`checksum(final File file, final Checksum checksum)`方法，可以自行选择校验算法
 :::
+
+## 如何转换数据库中查回来的数据？
+
+### 场景
+
+数据库中user表的head_icon列存储的是头像所在路径，希望每次查询出该列时，
+自动读取文件并转换为base64字符串。
+
+### 解决方案
+
+#### [`TypeHandler`](https://mybatis.org/mybatis-3/zh/configuration.html#typeHandlers)
+
+##### 定义对应的`TypeHandler`
+
+```java
+// 表明数据库端的映射类型是varchar
+@MappedJdbcTypes(JdbcType.VARCHAR)
+// 表明Java端的映射类型是String
+public class Base64TypeHandler extends BaseTypeHandler<String> {
+
+    @Override
+    public void setNonNullParameter(
+            PreparedStatement ps, int i, String parameter, JdbcType jdbcType)
+            throws SQLException {
+        // 更新数据库时不进行转换
+        ps.setString(i, parameter);
+    }
+
+    @Override
+    public String getNullableResult(ResultSet rs, String columnName)
+            throws SQLException {
+        // 查询时转base64
+        return Base64Utils.getBase64(rs.getString(columnName));
+    }
+
+    @Override
+    public String getNullableResult(ResultSet rs, int columnIndex)
+            throws SQLException {
+        // 查询时转base64
+        return Base64Utils.getBase64(rs.getString(columnIndex));
+
+    }
+
+    @Override
+    public String getNullableResult(CallableStatement cs, int columnIndex)
+            throws SQLException {
+        // 查询时转base64
+        return Base64Utils.getBase64(cs.getString(columnIndex));
+    }
+}
+```
+
+##### 使用`TypeHandler`
+
+由于只希望该类型处理器作用在head_icon列，而不是所有的类型是varchar的列，
+所以这里不使用全局注册`TypeHandler`。
+
+- Raw use
+
+```xml
+<resultMap id="userMap" type="User">
+  <id property="id" column="user_id" />
+  <result property="headIcon" column="head_icon" 
+    typeHandler="[Base64TypeHandler的全限定名]" />
+</resultMap>
+```
+
+- 注解（MyBatis-Plus）
+
+*以下示例省略了其他注解。*
+
+```java
+public class User {
+
+    String id;
+
+    @TableField(typeHandler = Base64TypeHandler.class)
+    String headIcon;
+
+    // Getters and Setters...
+}
+```
+
+::: tip
+笔者在使用自定义的`TypeHandler`时，`@Autowired`注解并不能生效。
+应该是因为MyBatis在使用我的自定义`TypeHandler`时，并不是从IOC容器中拿取的缘故。
+:::
+
+::: tip
+
+可以进一步使用组合注解进行优化
+
+```java
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@TableField(typeHandler = Base64TypeHandler.class)
+public @interface Base64 {
+}
+
+// ...
+// 等价于@TableField(typeHandler = Base64TypeHandler.class)
+@Base64
+String headIcon;
+// ...
+```
+
+:::
+
+## 当`@Autowired`失效时应如何注入依赖？
+
+### 场景
+
+众所周知，`@Autowired`是依赖于IOC容器的。
+`@Autowired`生效需要满足以下条件
+
+1. `@Autowired`所在类（即要被依赖注入的类）在IOC容器中
+2. `@Autowired`所注解的依赖（即要注入的依赖）在IOC容器中
+
+:warning:注意：即使依赖被成功注入，也只是**被IOC管理的那个`bean`实例**的依赖被成功注入了。
+因此，被依赖注入的类的其他实例是拿不到依赖对象的。
+
+举个例子：
+
+```java
+@Component
+public class User {
+
+    String id;
+
+    String headIcon;
+
+    @Autowired
+    ImgService imgService;
+
+    // Getters and Setters...
+}
+
+User user = userRepository.findUserById("001");
+user.getImgService() // null
+```
+
+只要`User`类在包扫描路径下，那么IOC容器里就确实会有一个`User`类型的`bean`，
+而且这个`bean`的`imgService`不为空。
+但该示例中，`user`是由`findUserById()`返回的新实例，
+并没有经过`Spring IOC`，因此`user`的`ImgService`为`null`。
+
+### 解决方案
+
+```java
+@Component
+public class User {
+
+    // 在该场景下，`imgService`声明为静态较为合适。
+    private static ImgService imgService;
+    
+    String id;
+
+    String headIcon;
+    
+    public static void setImgService(ImgService imgService) {
+        User.imgService = imgService;
+    }
+
+    // Getters and Setters...
+}
+
+@Service
+public class ImgService implements InitializingBean {
+    
+    // Bean初始化完毕后注入依赖
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        User.setImgService(this);    
+    }
+}
+```
