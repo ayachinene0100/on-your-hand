@@ -278,3 +278,76 @@ public class ImgService implements InitializingBean {
     }
 }
 ```
+
+
+## 如何使IDEA Gradle项目默认使用本地Gradle?
+
+Help > Edit Custom Properties...
+
+在打开的idea.properties文件中输入：
+
+```properties
+idea.gradle.distributionType=LOCAL
+```
+
+之后重启IDEA即可。
+
+---
+
+IDEA内置Gradle插件源码在以下部分处理新Gradle项目的项目级别配置。
+其中行高亮部分用来设置`User Gradle from:`配置项的
+
+```kotlin {10-15}
+package org.jetbrains.plugins.gradle.service.project.open
+
+// ...
+
+@ApiStatus.Internal
+fun GradleProjectSettings.setupGradleProjectSettings(project: Project, 
+    projectDirectory: Path) {
+  externalProjectPath = projectDirectory.systemIndependentPath
+  isUseQualifiedModuleNames = true
+  distributionType =
+    GradleEnvironment
+      .Headless
+      .GRADLE_DISTRIBUTION_TYPE
+        ?.let(DistributionType::valueOf)
+        ?: DistributionType.DEFAULT_WRAPPED
+  gradleHome = GradleEnvironment.Headless.GRADLE_HOME ?: suggestGradleHome(project)
+}
+
+// ...
+```
+
+```java {13-14}
+package org.jetbrains.plugins.gradle.util;
+
+import org.jetbrains.annotations.NonNls;
+
+/**
+ * @author Denis Zhdanov
+ */
+public final class GradleEnvironment {
+
+  @NonNls public static final boolean DEBUG_GRADLE_HOME_PROCESSING = Boolean.getBoolean("gradle.debug.home.processing");
+
+  public static final class Headless {
+    @NonNls public static final String GRADLE_DISTRIBUTION_TYPE = 
+        System.getProperty("idea.gradle.distributionType");
+    @NonNls public static final String GRADLE_HOME = 
+        System.getProperty("idea.gradle.home");
+    @NonNls public static final String GRADLE_VM_OPTIONS = 
+        System.getProperty("idea.gradle.vmOptions");
+    @NonNls public static final String GRADLE_OFFLINE = 
+        System.getProperty("idea.gradle.offline");
+    @NonNls public static final String GRADLE_SERVICE_DIRECTORY = 
+        System.getProperty("idea.gradle.serviceDirectory");
+
+    private Headless() {
+    }
+  }
+
+  private GradleEnvironment() {
+  }
+}
+```
