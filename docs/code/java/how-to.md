@@ -1,5 +1,8 @@
 # 场景驱动
 
+- <Badge text="陷阱" type="danger" />
+    代表该场景中隐藏着不易察觉的bug，即使有经验的开发人员也有可能犯类似的错误
+
 ## 如何精确计算金额？
 
 ### 场景
@@ -358,3 +361,77 @@ public final class GradleEnvironment {
   }
 }
 ```
+
+## 如何在数组结构改变时删除元素 <Badge text="陷阱" type="danger" />
+
+### 场景
+
+Apache POI的`XWPFDocument`提供了删除元素的方法`removeBodyElement(int pos)`。
+可以简单地把`XWPFDocument`理解成一个表示docx文档结构的类，其下包含一些元素（element），
+如：段落、表格等等。
+`removeBodyElement(int pos)`可以删除文档下对应位置的元素。
+
+如果你有两个元素a和b分别位于位置3，和位置5，根据直觉，很容易就会写出以下代码
+
+```java
+// doc是XWPFDocument类型的对象
+doc.removeBodyElement(3);   // 删除元素a
+doc.removeBodyElement(5);   // 删除元素b
+```
+
+::: danger
+但是其中隐藏着bug，由于元素a位于元素b之前，删除元素a之后会导致元素b位置前移，从而元素b现在位于位置4。
+现在再进行删除实际上删除的是元素b的下一个元素。
+:::
+
+### 解决方案
+
+#### 逆序删除
+
+即然删除一个元素会改变其之后元素的下标，而其之前元素的下标保持不变，
+那我们可以通过逆序删除来完成
+
+```java
+doc.removeBodyElement(5);
+doc.removeBodyElement(3);
+
+// 更一般地
+public static void removeElements(XWPFDocument doc, List<Integer> pos) {
+    if (CollectionUtils.isEmpty(pos)) {
+        return;
+    }
+    
+    // 为了保证删除的正确性，pos必须元素不重复且由小到大排序
+    pos = pos.stream().distinct().sorted().collect(Collectors.toList());
+    
+    for (int i = pos.size() - 1; i >= 0; i--) {
+        doc.removeBodyElement(pos.get(i));
+    }
+}
+```
+
+#### 动态计算新下标
+
+```java
+doc.removeBodyElement(3);       // 删除元素a
+doc.removeBodyElement(4);       // 删除元素b
+
+// 更一般地
+public static void removeElements(XWPFDocument doc, List<Integer> pos) {
+    if (CollectionUtils.isEmpty(pos)) {
+        return;
+    }
+    
+    // 为了保证删除的正确性，pos必须元素不重复且由小到大排序
+    pos = pos.stream().distinct().sorted().collect(Collectors.toList());
+    
+    for (int i = 0; i < pos.size(); i++) {
+        // 每删除一个元素，其之后的所有元素的下标都要前移一个位置
+        doc.removeBodyElement(pos.get(i) - i);
+    }
+}
+```
+
+::: tip
+与之很相像的另一个主题请参考：[不要在遍历时改变Collection的结构](./best-practice#不要在遍历时改变collection的结构)
+:::

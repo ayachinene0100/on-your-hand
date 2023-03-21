@@ -288,3 +288,5 @@ public isAmt(String s) {
     return AMT.matcher(s).matches();
 }
 ```
+
+## 不要在遍历时改变Collection的结构
