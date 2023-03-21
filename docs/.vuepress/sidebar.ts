@@ -15,5 +15,18 @@ export default sidebar({
                 "how-to"
             ]
         }
+    ],
+    "/common-operations/": [
+        {
+            text: "Linux",
+            icon: "linux",
+            prefix: "linux",
+            collapsible: false,
+            link: "linux",
+            children: [
+                "commons",
+                "vi"
+            ]
+        }
     ]
 })

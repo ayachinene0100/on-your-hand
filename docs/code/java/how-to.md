@@ -82,8 +82,8 @@ private static String getAmtStr(int amtInCent) {
 
 ### 场景
 
-- 校验文件完整性
-- 重复文件查找
+校验文件完整性
+将源文件分段传输后合并，检查合并后的文件是否完整。
 
 ### 解决方案
 
@@ -282,6 +282,13 @@ public class ImgService implements InitializingBean {
 
 ## 如何使IDEA Gradle项目默认使用本地Gradle?
 
+### 场景
+
+当远程git仓库没有.idea文件夹时，拉取下来的代码默认使用gradle wrapper。
+但项目总是想要使用本地gradle，想要更改该配置，但idea没有提供图形接口。
+
+### 解决方案
+
 Help > Edit Custom Properties...
 
 在打开的idea.properties文件中输入：
@@ -295,7 +302,7 @@ idea.gradle.distributionType=LOCAL
 ---
 
 IDEA内置Gradle插件源码在以下部分处理新Gradle项目的项目级别配置。
-其中行高亮部分用来设置`User Gradle from:`配置项的
+其中行高亮部分用来设置`Use Gradle from:`配置项的
 
 ```kotlin {10-15}
 package org.jetbrains.plugins.gradle.service.project.open
