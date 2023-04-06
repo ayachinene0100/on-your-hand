@@ -9,6 +9,7 @@ export default sidebar({
             collapsible: false,
             link: "java",
             children: [
+                "design-principle",
                 "common-tools",
                 "param-check",
                 "best-practice",
@@ -25,7 +26,8 @@ export default sidebar({
             link: "linux",
             children: [
                 "commons",
-                "vi"
+                "vi",
+                "ftp"
             ]
         }
     ]
