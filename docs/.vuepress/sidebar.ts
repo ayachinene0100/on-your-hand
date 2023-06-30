@@ -11,7 +11,6 @@ export default sidebar({
             children: [
                 "design-principle",
                 "common-tools",
-                "param-check",
                 "best-practice",
                 "how-to"
             ]
@@ -28,6 +27,16 @@ export default sidebar({
                 "commons",
                 "vi",
                 "ftp"
+            ]
+        },
+        {
+            text: "Mysql",
+            icon: "mysql",
+            prefix: "mysql",
+            collapsible: false,
+            link: "mysql",
+            children: [
+                "commons"
             ]
         }
     ]
