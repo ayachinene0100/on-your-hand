@@ -26,6 +26,7 @@ export default hopeTheme({
     plugins: {
         mdEnhance: {
             codetabs: true
-        }
+        },
+        blog: true
     }
 })
