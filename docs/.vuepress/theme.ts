@@ -28,5 +28,6 @@ export default hopeTheme({
             codetabs: true
         },
         blog: true
-    }
+    },
+    hotReload: true
 })
