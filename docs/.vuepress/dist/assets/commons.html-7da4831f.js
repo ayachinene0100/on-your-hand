@@ -1,4 +1,20 @@
-import{_ as e,W as l,X as i,Z as s,$ as n,Y as t,a1 as c,C as r}from"./framework-e9da4443.js";const o={},d=s("h1",{id:"通用",tabindex:"-1"},[s("a",{class:"header-anchor",href:"#通用","aria-hidden":"true"},"#"),n(" 通用")],-1),p=s("h2",{id:"将数据导出到csv",tabindex:"-1"},[s("a",{class:"header-anchor",href:"#将数据导出到csv","aria-hidden":"true"},"#"),n(" 将数据导出到csv")],-1),u={href:"https://dev.mysql.com/doc/refman/8.0/en/select-into.html",target:"_blank",rel:"noopener noreferrer"},m=c(`<div class="language-mysql line-numbers-mode" data-ext="mysql"><pre class="language-mysql"><code>-- csv表头
+import{_ as i,W as r,X as t,Z as s,$ as n,Y as a,a0 as l,C as c}from"./framework-abb6c544.js";const d={},o=s("h1",{id:"通用",tabindex:"-1"},[s("a",{class:"header-anchor",href:"#通用","aria-hidden":"true"},"#"),n(" 通用")],-1),p=s("h2",{id:"sql语法相关",tabindex:"-1"},[s("a",{class:"header-anchor",href:"#sql语法相关","aria-hidden":"true"},"#"),n(" SQL语法相关")],-1),u={href:"https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html",target:"_blank",rel:"noopener noreferrer"},m=s("h2",{id:"函数相关",tabindex:"-1"},[s("a",{class:"header-anchor",href:"#函数相关","aria-hidden":"true"},"#"),n(" 函数相关")],-1),v={href:"https://dev.mysql.com/doc/refman/8.0/en/functions.html",target:"_blank",rel:"noopener noreferrer"},b=l(`<h2 id="按日期分组" tabindex="-1"><a class="header-anchor" href="#按日期分组" aria-hidden="true">#</a> 按日期分组</h2><p>以下时间类型为datetime</p><div class="language-mysql line-numbers-mode" data-ext="mysql"><pre class="language-mysql"><code>-- substr以1作为起始下标
+
+-- 按年
+select substr(create_time, 1, 4) as create_year, count(*)
+from user
+group by create_year;
+
+-- 按月
+select substr(create_time, 1, 7) as create_year, count(*)
+from user
+group by create_year;
+
+-- 按日
+select substr(create_time, 1, 10) as create_year, count(*)
+from user
+group by create_year;
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="将数据导出到csv" tabindex="-1"><a class="header-anchor" href="#将数据导出到csv" aria-hidden="true">#</a> 将数据导出到csv</h2>`,4),k={href:"https://dev.mysql.com/doc/refman/8.0/en/select-into.html",target:"_blank",rel:"noopener noreferrer"},h=l(`<div class="language-mysql line-numbers-mode" data-ext="mysql"><pre class="language-mysql"><code>-- csv表头
 (select &#39;id&#39;, &#39;name&#39;)
 union
 -- 要导出的数据
@@ -48,4 +64,4 @@ mysql<span class="token operator">&gt;</span> show variables like <span class="t
 +------------------+---------+
 <span class="token number">1</span> row <span class="token keyword">in</span> <span class="token builtin class-name">set</span> <span class="token punctuation">(</span><span class="token number">0.01</span> sec<span class="token punctuation">)</span>
 
-</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,13);function v(b,k){const a=r("ExternalLinkIcon");return l(),i("div",null,[d,p,s("p",null,[n("具体可以参考官方文档："),s("a",u,[n("MySQL 8.0 Reference Manual 13.2.13.1 SELECT ... INTO Statement"),t(a)])]),m])}const _=e(o,[["render",v],["__file","commons.html.vue"]]);export{_ as default};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,13);function _(q,y){const e=c("ExternalLinkIcon");return r(),t("div",null,[o,p,s("blockquote",null,[s("p",null,[n("参考链接："),s("a",u,[n("MySQL 8.0 Reference Manual Chapter 13 SQL Statements"),a(e)])])]),m,s("blockquote",null,[s("p",null,[n("参考链接: "),s("a",v,[n("MySQL 8.0 Reference Manual Chapter 12 Functions and Operators"),a(e)])])]),b,s("p",null,[n("具体可以参考官方文档："),s("a",k,[n("MySQL 8.0 Reference Manual 13.2.13.1 SELECT ... INTO Statement"),a(e)])]),h])}const f=i(d,[["render",_],["__file","commons.html.vue"]]);export{f as default};

@@ -1,5 +1,36 @@
 # 通用
 
+## SQL语法相关
+
+> 参考链接：[MySQL 8.0 Reference Manual Chapter 13 SQL Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)
+
+## 函数相关
+
+> 参考链接: [MySQL 8.0 Reference Manual Chapter 12 Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/functions.html)
+
+## 按日期分组
+
+以下时间类型为datetime
+
+```mysql
+-- substr以1作为起始下标
+
+-- 按年
+select substr(create_time, 1, 4) as create_year, count(*)
+from user
+group by create_year;
+
+-- 按月
+select substr(create_time, 1, 7) as create_year, count(*)
+from user
+group by create_year;
+
+-- 按日
+select substr(create_time, 1, 10) as create_year, count(*)
+from user
+group by create_year;
+```
+
 ## 将数据导出到csv
 
 具体可以参考官方文档：[MySQL 8.0 Reference Manual 13.2.13.1 SELECT ... INTO Statement](https://dev.mysql.com/doc/refman/8.0/en/select-into.html)

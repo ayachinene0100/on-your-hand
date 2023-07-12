@@ -70,3 +70,36 @@
 ::: tip
 以上用到了linux重定向。表示把空内容输入到filepath位置的文件中
 :::
+
+## 根据域名ip
+
+```shell
+➜  ~ ping www.baidu.com
+PING www.a.shifen.com (157.148.69.80): 56 data bytes
+64 bytes from 157.148.69.80: icmp_seq=0 ttl=51 time=34.793 ms
+64 bytes from 157.148.69.80: icmp_seq=1 ttl=51 time=38.886 ms
+64 bytes from 157.148.69.80: icmp_seq=2 ttl=51 time=40.921 ms
+64 bytes from 157.148.69.80: icmp_seq=3 ttl=51 time=38.285 ms
+64 bytes from 157.148.69.80: icmp_seq=4 ttl=51 time=101.599 ms
+```
+
+## 查看磁盘空间
+
+```shell
+root@VM-12-15-ubuntu:~# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           198M  980K  197M   1% /run
+/dev/vda2        40G  8.4G   30G  23% /
+tmpfs           988M   24K  988M   1% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           198M  4.0K  198M   1% /run/user/0
+```
+
+> -h中h代表human-readable，即以人类可阅读的形式输出
+
+## 杀死端口上的进程
+
+```shell
+netstat -ano | findstr 8080
+taskkill /f /pid [pid]
+```
