@@ -1,4 +1,4 @@
-import{_ as e,W as s,X as n,a0 as a}from"./framework-abb6c544.js";const i={},t=a(`<h1 id="ftp" tabindex="-1"><a class="header-anchor" href="#ftp" aria-hidden="true">#</a> FTP</h1><div class="hint-container tip"><p class="hint-container-title">提示</p><p>下文ftp&gt;代表ftp命令行模式</p></div><h2 id="帮助" tabindex="-1"><a class="header-anchor" href="#帮助" aria-hidden="true">#</a> 帮助</h2><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token comment"># 执行以下命令会出现帮助条目</span>
+import{_ as e,W as s,X as n,a1 as a}from"./framework-e9da4443.js";const i={},t=a(`<h1 id="ftp" tabindex="-1"><a class="header-anchor" href="#ftp" aria-hidden="true">#</a> FTP</h1><div class="hint-container tip"><p class="hint-container-title">提示</p><p>下文ftp&gt;代表ftp命令行模式</p></div><h2 id="帮助" tabindex="-1"><a class="header-anchor" href="#帮助" aria-hidden="true">#</a> 帮助</h2><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token comment"># 执行以下命令会出现帮助条目</span>
 ftp<span class="token operator">&gt;</span> <span class="token builtin class-name">help</span>
 Commands may be abbreviated.  Commands are:
 

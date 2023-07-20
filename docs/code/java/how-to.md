@@ -435,3 +435,55 @@ public static void removeElements(XWPFDocument doc, List<Integer> pos) {
 ::: tip
 与之很相像的另一个主题请参考：[不要在遍历时改变Collection的结构](./best-practice#不要在遍历时改变collection的结构)
 :::
+
+## Spring如何声明异步接口
+
+### 场景
+
+有一个接口比较耗时，如大量数据导出。希望该接口可以快速返回，而后端导出继续。
+
+### 解决方案
+
+#### 1. 使用`@Async`注解
+
+```java
+@Service
+public class ExportService {
+
+    @Async
+    // 被注解的方法的返回值必须是void或者Future
+    public void export() {
+    }
+
+    @Async
+    public Future<Integer> export1() {
+    }
+
+    // 更具体的，选择Future的子类
+    @Async
+    public ListenableFuture<Integer> export2() {
+    }
+    @Async
+    public CompletableFuture<Integer> export3() {
+    }
+
+    // 非法返回类型
+    @Async
+    public Integer export4() {
+    }
+}
+
+// 还需要开启Async功能
+// 配合@Configuration使用
+@EnableAsync
+@Configuration
+public class AppConfig {}
+```
+
+在@EnableAsync注解的注释中有以下说明：
+
+> The mode attribute controls how advice is applied: If the mode is AdviceMode.PROXY (the default), then the other attributes control the behavior of the proxying. **Please note that proxy mode allows for interception of calls through the proxy only; local calls within the same class cannot get intercepted that way**.
+
+AdviceMode可选值为PROXY和ASPECTJ
+其中PROXY通过动态代理实现，ASPECTJ通过在编译器修改字节码文件实现。
+由于同一类中的调用不会经过动态代理，故PROXY模式下，同一个类中的异步方法调用不会生效。
