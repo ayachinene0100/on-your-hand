@@ -42,7 +42,8 @@ union
 -- 要导出的数据
 (select
      id,
-     name
+     -- 默认情况下导出的数据中null用 \N 表示，可以使用ifnull函数将其转换为''
+     ifnull(name, '')
 from user
 )
 -- 输出文件路径

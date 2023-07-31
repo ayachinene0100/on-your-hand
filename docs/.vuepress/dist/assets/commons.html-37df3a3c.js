@@ -20,7 +20,8 @@ union
 -- 要导出的数据
 (select
      id,
-     name
+     -- 默认情况下导出的数据中null用 \\N 表示，可以使用ifnull函数将其转换为&#39;&#39;
+     ifnull(name, &#39;&#39;)
 from user
 )
 -- 输出文件路径
@@ -31,7 +32,7 @@ fields enclosed by &#39;&quot;&#39;
 terminated by &#39;,&#39;
 -- \\n作为换行符
 lines terminated by &#39;\\n&#39;;
-</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>默认情况下文件会被保存在mysql变量<code>datadir</code>下的[schema名]路径下</p><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code>mysql<span class="token operator">&gt;</span> show variables like <span class="token string">&#39;datadir&#39;</span><span class="token punctuation">;</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>默认情况下文件会被保存在mysql变量<code>datadir</code>下的[schema名]路径下</p><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code>mysql<span class="token operator">&gt;</span> show variables like <span class="token string">&#39;datadir&#39;</span><span class="token punctuation">;</span>
 +---------------+------------------------+
 <span class="token operator">|</span> Variable_name <span class="token operator">|</span> Value                  <span class="token operator">|</span>
 +---------------+------------------------+
