@@ -8,6 +8,8 @@
 
 > 参考链接: [MySQL 8.0 Reference Manual Chapter 12 Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/functions.html)
 
+> 内置函数参照表: [MySQL 8.0 Reference Manual Chapter 12.1 Built-In Function and Operator Reference](https://dev.mysql.com/doc/refman/8.0/en/built-in-function-reference.html)
+
 ## 按日期分组
 
 以下时间类型为datetime
