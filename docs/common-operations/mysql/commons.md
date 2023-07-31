@@ -10,6 +10,10 @@
 
 > 内置函数参照表: [MySQL 8.0 Reference Manual Chapter 12.1 Built-In Function and Operator Reference](https://dev.mysql.com/doc/refman/8.0/en/built-in-function-reference.html)
 
+## 变量相关
+
+> 参考链接: [MySQL 8.0 Reference Manual Chapter 5.1.4 Server Option, System Variable, and Status Variable Reference](https://dev.mysql.com/doc/refman/8.0/en/server-option-variable-reference.html)
+
 ## 按日期分组
 
 以下时间类型为datetime
