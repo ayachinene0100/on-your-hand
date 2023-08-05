@@ -115,3 +115,17 @@ kill -9 [pid]
 unzip -d [目标目录] [压缩文件]
 unzip -d ./output_dir data.zip
 ```
+
+## 多参数
+
+```shell
+# 将ls的输出作为echo的参数传入
+# 若ls输出a.txt，等价于：echo a.txt
+ls | xargs echo
+```
+
+用例:
+```
+# 停止所有正在运行的容器
+docker ps -qa | xargs docker stop
+```
