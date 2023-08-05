@@ -97,11 +97,16 @@ tmpfs           198M  4.0K  198M   1% /run/user/0
 
 > -h中h代表human-readable，即以人类可阅读的形式输出
 
-## 杀死端口上的进程(Windows)
+## 杀死端口上的进程
 
 ```shell
+# Windows
 netstat -ano | findstr 8080
 taskkill /f /pid [pid]
+
+# Linux / Mac OS
+lsof -i :8080
+kill -9 [pid]
 ```
 
 ## 解压到指定目录
