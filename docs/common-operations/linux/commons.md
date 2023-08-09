@@ -129,3 +129,16 @@ ls | xargs echo
 # 停止所有正在运行的容器
 docker ps -qa | xargs docker stop
 ```
+
+## 查找文件
+
+```shell
+# 查找mysql配置文件
+locate my.cnf
+```
+
+## 执行sql脚本
+
+```shell
+mysql -h [host] -P [port] -u [username] -p [dbname] -e "$(cat ddl.sql)" 
+```
