@@ -25,6 +25,7 @@ export default sidebar({
             link: "linux",
             children: [
                 "commons",
+                "shell-script",
                 "vi",
                 "ftp"
             ]
