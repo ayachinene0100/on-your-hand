@@ -39,6 +39,15 @@ export default sidebar({
             children: [
                 "commons"
             ]
+        },
+        {
+            text: "Intellij IDEA",
+            prefix: "intellij",
+            collapsible: false,
+            link: "intellij",
+            children: [
+                "commons", "idea-vim"
+            ]
         }
     ]
 })
